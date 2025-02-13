@@ -10,11 +10,11 @@ import {
 const userRoute = Router();
 
 userRoute
-  .post("/register", registerUser)
+  .post("/signup", registerUser)
   .post("/profile", getProfile)
   .post("/login", loginUser)
   .put("/edit", editUserInfo)
-  .put("/delete", deleteProfile)
-  .get("/all", getAllUser);
+  .get("/all", getAllUser)
+  .delete("/delete", deleteProfile);
 
 export { userRoute };
