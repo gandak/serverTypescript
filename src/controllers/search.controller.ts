@@ -2,15 +2,17 @@ import { RequestHandler } from "express";
 import { products } from "../database/products.db";
 
 export const searchProducts: RequestHandler = (req, res) => {
-  const query = req.query.query as string;
+  const value = req.query.query as string;
 
-  if (!query) {
+  console.log(value);
+
+  if (!value) {
     res.send("Search value is empty!");
     return;
   }
 
   const foundProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(query.toLowerCase())
+    product.name.toLowerCase().includes(value.toLowerCase())
   );
 
   if (!foundProducts) {

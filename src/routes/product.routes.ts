@@ -14,6 +14,6 @@ productRoute
   .get("/", getAllProducts)
   .get("/:id", getProduct)
   .put("/:id", updateProduct)
-  .delete("/delete", deleteProduct);
+  .delete("/delete/:id", deleteProduct);
 
 export { productRoute };

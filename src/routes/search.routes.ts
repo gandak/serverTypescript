@@ -3,6 +3,6 @@ import { searchProducts } from "../controllers/search.controller";
 
 const searchRoute = Router();
 
-searchRoute.get("/search", searchProducts);
+searchRoute.get("/", searchProducts);
 
 export { searchRoute };

@@ -9,7 +9,12 @@ export const registerUser: RequestHandler = async (req, res) => {
 
   const findUser = users.find((user) => user.name === name);
   if (findUser) {
-    res.send("This username already exists");
+    try {
+      users.push(req.body);
+      res.status(400).json({ message: "This username already exists" });
+    } catch (error) {
+      res.status(500).json({ message: "error", error });
+    }
     return;
   }
 
@@ -27,8 +32,13 @@ export const registerUser: RequestHandler = async (req, res) => {
 
   const passwordHash = await bcrypt.hash(password, saltRounds);
 
+  const newId = users[users.length - 1];
+  const newId2 = newId._id ? newId._id + 1 : 1;
+
+  // const newId = users[users.length - 1] ? users[users.length - 1]._id  + 1 : 1;
+
   const newUser = {
-    _id: Date.now(),
+    _id: newId2,
     name,
     email,
     role: newRole,
@@ -43,9 +53,9 @@ export const registerUser: RequestHandler = async (req, res) => {
 };
 
 export const getProfile: RequestHandler = (req, res) => {
-  const { name } = req.body;
+  const { id } = req.body;
 
-  const foundUser = users.find((user) => user.name == name);
+  const foundUser = users.find((user) => user._id == id);
 
   res.send(foundUser);
   return;

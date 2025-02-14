@@ -1,11 +1,13 @@
 import { RequestHandler } from "express";
-import { users } from "../database/users.db";
 import { products } from "../database/products.db";
 
 export const createProduct: RequestHandler = (req, res) => {
   const { name, description, price, stock, category, images } = req.body;
 
-  const isRegistered = products.find((product) => (product.name = name));
+  const isRegistered = products.find((product) => product.name == name);
+
+  console.log(isRegistered);
+
   if (isRegistered) {
     res.send("This product already exists");
     return;
@@ -17,10 +19,10 @@ export const createProduct: RequestHandler = (req, res) => {
     _id: newId,
     name,
     description,
-    price: price,
-    stock: stock,
-    category: category,
-    images: images,
+    price,
+    stock,
+    category,
+    images,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -43,6 +45,7 @@ export const getProduct: RequestHandler = (req, res) => {
     : res.send(`id: "${id}" product not found!`);
   return;
 };
+
 export const updateProduct: RequestHandler = (req, res) => {
   const { id } = req.params;
   const { name, description, price, stock, category, images } = req.body;
@@ -54,19 +57,12 @@ export const updateProduct: RequestHandler = (req, res) => {
     return;
   }
 
-  name
-    ? (foundProduct.name = name)
-    : description
-    ? (foundProduct.description = description)
-    : price
-    ? (foundProduct.price = price)
-    : stock
-    ? (foundProduct.stock = stock)
-    : category
-    ? (foundProduct.category = category)
-    : images
-    ? (foundProduct.images = images)
-    : res.send("You have to insert at least one detail to update");
+  if (name) foundProduct.name = name;
+  if (description) foundProduct.description = description;
+  if (price) foundProduct.price = price;
+  if (stock) foundProduct.stock = stock;
+  if (category) foundProduct.category = category;
+  if (images) foundProduct.images = images;
 
   res.send("Product details updated!");
 };
